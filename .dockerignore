@@ -1,0 +1,7 @@
+Backend-CodeWear/node_modules
+Frontend-CodeWear/node_modules
+.git
+.vscode
+**/dist
+**/coverage
+**/.DS_Store
