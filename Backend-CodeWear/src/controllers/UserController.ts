@@ -135,8 +135,8 @@ export const createUser = async (req: AuthRequest, res: Response) => {
 };
 
 
-  // LOGIN DE USUÁRIO
- 
+// LOGIN DE USUÁRIO
+
 export const loginUser = async (req: AuthRequest, res: Response) => {
     try {
         const { email, password } = req.body;
@@ -157,7 +157,7 @@ export const loginUser = async (req: AuthRequest, res: Response) => {
 
         const token = jwt.sign(
             { id: user.id, name: user.name, role: user.role },
-            process.env.JWT_SECRET || 'uma_chave_segura_aqui',
+            process.env.JWT_SECRET || 'chave_secreta_padrao',
             { expiresIn: '1d' }
         );
 
@@ -179,8 +179,8 @@ export const loginUser = async (req: AuthRequest, res: Response) => {
 };
 
 
- // OBTER DADOS DO USUÁRIO LOGADO
- 
+// OBTER DADOS DO USUÁRIO LOGADO
+
 export const getMe = async (req: AuthRequest, res: Response) => {
     try {
         const userId = getAuthorizedUserId(req);
@@ -200,8 +200,8 @@ export const getMe = async (req: AuthRequest, res: Response) => {
 };
 
 
- // ATUALIZAR PERFIL
- 
+// ATUALIZAR PERFIL
+
 export const updateUser = async (req: AuthRequest, res: Response) => {
     try {
         const userId = getAuthorizedUserId(req);
@@ -236,8 +236,8 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
 };
 
 
-  //CANCELAR CONTA DO USUÁRIO LOGADO
- 
+//CANCELAR CONTA DO USUÁRIO LOGADO
+
 export const cancelMyAccount = async (req: AuthRequest, res: Response) => {
     try {
         const userId = getAuthorizedUserId(req);
@@ -260,21 +260,21 @@ export const cancelMyAccount = async (req: AuthRequest, res: Response) => {
 };
 
 
- //LISTAR CLIENTES (Admin)
- 
- 
+//LISTAR CLIENTES (Admin)
+
+
 export const listUsersAdmin = async (req: AuthRequest, res: Response) => {
     try {
         const page = parseInt(req.query.page as string) || 1;
         const search = (req.query.search as string) || '';
 
-        
+
         const queryLimit = parseInt(req.query.limit as string);
         const limit = isNaN(queryLimit) ? 5 : queryLimit;
 
         const offset = (page - 1) * limit;
 
-        
+
         const activeClientWhereClause = getActiveClientWhereClause();
         const totalCountInDB = await User.count({ where: activeClientWhereClause });
 
@@ -300,7 +300,7 @@ export const listUsersAdmin = async (req: AuthRequest, res: Response) => {
 };
 
 
- //ESTATÍSTICAS DO DASHBOARD (Admin)
+//ESTATÍSTICAS DO DASHBOARD (Admin)
 
 export const getDashboardStats = async (req: AuthRequest, res: Response) => {
     try {
