@@ -51,7 +51,8 @@ docker compose up --build -d
 - Aplicacao via Nginx HTTPS: `https://codewear.local`
 - API via Nginx: `http://localhost:80/api/products`
 - API via Nginx HTTPS: `https://codewear.local/api/products`
-- Backend direto (opcional): `http://localhost:3000/products`
+
+Observacao: por seguranca e isolamento de rede, apenas o Nginx fica exposto fora dos containers.
 
 Ver containers em execucao:
 
