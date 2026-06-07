@@ -1,1 +1,2 @@
-cd Backend-CodeWear && npm run test
+docker compose up -d db backend
+docker compose exec -T backend npm run test
