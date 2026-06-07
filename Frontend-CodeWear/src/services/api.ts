@@ -24,7 +24,7 @@ import type {
 } from '../types/api';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
 });
 
 const savedToken = localStorage.getItem('@CodeWear:token');
