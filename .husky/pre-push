@@ -1,1 +1,1 @@
-cd backend && npm run test
+cd Backend-CodeWear && npm run test
