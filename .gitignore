@@ -8,3 +8,6 @@ dist/
 .vscode/
 .DS_Store
 npm-debug.log*
+
+# Certificados locais (mkcert)
+certs/

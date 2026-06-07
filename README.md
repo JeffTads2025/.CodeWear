@@ -16,7 +16,26 @@ Principais variaveis:
 - `BACKEND_PORT`
 - `FRONTEND_PORT`
 - `NGINX_PORT`
+- `NGINX_SSL_PORT`
 - `VITE_API_URL=/api`
+
+## HTTPS com host customizado (mkcert)
+
+1. Crie a pasta `certs` na raiz do projeto.
+2. Gere certificados locais com mkcert:
+
+```bash
+mkcert -install
+mkcert -key-file certs/codewear.local-key.pem -cert-file certs/codewear.local.pem codewear.local localhost 127.0.0.1 ::1
+```
+
+3. Adicione o host local no arquivo de hosts do sistema:
+
+Windows (`C:\Windows\System32\drivers\etc\hosts`):
+
+```text
+127.0.0.1 codewear.local
+```
 
 ## 2) Iniciar tudo
 
@@ -29,7 +48,9 @@ docker compose up --build -d
 ## 3) Validar os servicos
 
 - Aplicacao via Nginx: `http://localhost:80`
+- Aplicacao via Nginx HTTPS: `https://codewear.local`
 - API via Nginx: `http://localhost:80/api/products`
+- API via Nginx HTTPS: `https://codewear.local/api/products`
 - Backend direto (opcional): `http://localhost:3000/products`
 
 Ver containers em execucao:

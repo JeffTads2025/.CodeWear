@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
+      allowedHosts: ['localhost', 'codewear.local', 'meuapp.local'],
       proxy: {
         '/api': {
           target: proxyTarget,
