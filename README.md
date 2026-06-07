@@ -1,56 +1,56 @@
-# CodeWear - DevOps Quick Start
+# CodeWear - Guia Rapido de DevOps
 
-This repository uses Docker Compose with 4 services:
+Este repositorio usa Docker Compose com 4 servicos:
 - MySQL (db)
 - Backend (Node + Express)
 - Frontend (Vite)
-- Nginx (reverse proxy)
+- Nginx (proxy reverso)
 
-## 1) Configure environment
+## 1) Configurar ambiente
 
-1. Copy `.env.example` to `.env`.
-2. Adjust values only if needed.
+1. Copie `.env.example` para `.env`.
+2. Ajuste os valores somente se necessario.
 
-Default key values:
+Principais variaveis:
 - `DB_PASSWORD`
 - `BACKEND_PORT`
 - `FRONTEND_PORT`
 - `NGINX_PORT`
 - `VITE_API_URL=/api`
 
-## 2) Start everything
+## 2) Iniciar tudo
 
-From repository root:
+Na raiz do repositorio:
 
 ```bash
 docker compose up --build -d
 ```
 
-## 3) Validate services
+## 3) Validar os servicos
 
-- App via Nginx: `http://localhost:80`
+- Aplicacao via Nginx: `http://localhost:80`
 - API via Nginx: `http://localhost:80/api/products`
-- Backend direct (optional): `http://localhost:3000/products`
+- Backend direto (opcional): `http://localhost:3000/products`
 
-Check running containers:
+Ver containers em execucao:
 
 ```bash
 docker compose ps
 ```
 
-Check logs:
+Ver logs:
 
 ```bash
 docker compose logs -f
 ```
 
-## 4) Stop services
+## 4) Parar os servicos
 
 ```bash
 docker compose down
 ```
 
-To also remove MySQL data volume:
+Para remover tambem o volume do MySQL:
 
 ```bash
 docker compose down -v
