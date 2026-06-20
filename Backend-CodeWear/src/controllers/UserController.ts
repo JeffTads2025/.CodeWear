@@ -3,6 +3,9 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Op, fn, col, where, type WhereOptions } from 'sequelize';
 import User from '../models/UserModel';
+import Cart from '../models/CartModel';
+import Order from '../models/OrderModel';
+import OrderItem from '../models/OrderItemModel';
 import {
     buildCancelledAccountData,
     CANCELLED_EMAIL_DOMAIN,
@@ -256,6 +259,55 @@ export const cancelMyAccount = async (req: AuthRequest, res: Response) => {
     } catch (error) {
         console.error('Erro ao cancelar conta:', error);
         return res.status(500).json({ message: "Erro ao cancelar conta." });
+    }
+};
+
+export const deleteTestUser = async (req: AuthRequest, res: Response) => {
+    try {
+        const secret = String(req.headers['x-e2e-secret'] || '');
+        const expectedSecret = process.env.E2E_SECRET || 'codewear-test-secret';
+
+        if (secret !== expectedSecret) {
+            return res.status(403).json({ message: 'Acesso negado ao endpoint de testes.' });
+        }
+
+        const { email, password } = req.body as { email?: string; password?: string };
+
+        if (!email || !password) {
+            return res.status(400).json({ message: 'E-mail e senha são obrigatórios.' });
+        }
+
+        const cleanEmail = email.toLowerCase().trim();
+        const user = await User.findOne({ where: { email: cleanEmail } });
+
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário de teste não encontrado.' });
+        }
+
+        if (!cleanEmail.endsWith('@codewear.test')) {
+            return res.status(403).json({ message: 'Somente contas de teste podem ser removidas aqui.' });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Senha incorreta.' });
+        }
+
+        const orders = await Order.findAll({ where: { userId: user.id } });
+        const orderIds = orders.map((order) => order.id);
+
+        if (orderIds.length > 0) {
+            await OrderItem.destroy({ where: { orderId: orderIds } });
+            await Order.destroy({ where: { userId: user.id } });
+        }
+
+        await Cart.destroy({ where: { userId: user.id } });
+        await user.destroy();
+
+        return res.status(200).json({ message: 'Usuário de teste removido com sucesso.' });
+    } catch (error) {
+        console.error('Erro ao excluir usuário de teste:', error);
+        return res.status(500).json({ message: 'Erro ao excluir usuário de teste.' });
     }
 };
 
