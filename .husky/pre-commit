@@ -1,1 +1,17 @@
+#!/usr/bin/env sh
+
+# Block accidental commit of local Playwright credentials file.
+if git diff --cached --name-only | grep -E '^Frontend-CodeWear/\.env\.playwright\.local$' >/dev/null; then
+	echo "Erro: Frontend-CodeWear/.env.playwright.local nao pode ser commitado."
+	echo "Use apenas Frontend-CodeWear/.env.playwright.local.example no repositorio."
+	exit 1
+fi
+
+# Block common sensitive assignments in staged added lines.
+if git diff --cached --no-color | grep -E '^\+[^+].*(PLAYWRIGHT_ADMIN_PASSWORD|PLAYWRIGHT_ADMIN_EMAIL|JWT_SECRET|MYSQL_ROOT_PASSWORD|DB_PASSWORD|DB_PASS)=' >/dev/null; then
+	echo "Erro: detectada tentativa de commit com variavel sensivel."
+	echo "Remova credenciais do commit antes de continuar."
+	exit 1
+fi
+
 npm run lint
