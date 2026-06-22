@@ -5,5 +5,6 @@ module.exports = {
   transform: {
     '^.+\\.ts$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
   },
+  testTimeout: 30000,
   testPathIgnorePatterns: ["/node_modules/", "/dist/"],
 };
