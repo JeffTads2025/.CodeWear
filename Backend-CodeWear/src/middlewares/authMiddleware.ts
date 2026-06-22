@@ -6,8 +6,8 @@ import { isCancelledEmail } from '../utils/accountCancellation';
 
 export const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
-  
- 
+
+
   if (!authHeader) {
     console.log("ALERTA: Requisição sem header de autorização.");
     return res.status(401).json({ message: "Login necessário" });
@@ -16,10 +16,10 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'chave_secreta_padrao') as { 
-      id: number; 
-      name: string; 
-      role: 'admin' | 'client' 
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'chave_secreta_padrao') as {
+      id: number;
+      name: string;
+      role: 'admin' | 'client'
     };
 
     const currentUser = await User.findByPk(decoded.id, {
@@ -37,8 +37,8 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
     };
 
     // Proteção de rotas administrativas
-    const isAdminRoute = req.originalUrl.includes('admin') || 
-                         (req.originalUrl.includes('products') && req.method !== 'GET');
+    const isAdminRoute = req.originalUrl.includes('admin') ||
+      (req.originalUrl.includes('products') && req.method !== 'GET');
 
     if (isAdminRoute && req.user.role !== 'admin') {
       return res.status(403).json({ message: "Acesso restrito ao administrador" });

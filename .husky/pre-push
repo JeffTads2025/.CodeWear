@@ -1,0 +1,7 @@
+# set -e
+
+# docker compose up -d db backend
+
+# docker compose exec -T -e FORCE_COLOR=1 -e CI=false backend npm run test -- --colors --runInBand --testTimeout=30000
+
+# npm run test:e2e
