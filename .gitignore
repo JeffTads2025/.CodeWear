@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.local
+.env.*
+!.env.example
+coverage/
+dist/
+.vscode/
+.DS_Store
+npm-debug.log*
+
+# Certificados locais (mkcert)
+certs/

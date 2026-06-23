@@ -1,15 +1,15 @@
 import { Router } from 'express';
 import { listProducts, createProduct, updateProduct, deleteProduct } from '../controllers/ProductController';
-import { cancelMyAccount, createUser, loginUser, getMe, updateUser, listUsersAdmin } from '../controllers/UserController';
+import { cancelMyAccount, createUser, deleteTestUser, loginUser, getMe, updateUser, listUsersAdmin } from '../controllers/UserController';
 import { addToCart, listCart, updateCartItem, removeItem } from '../controllers/CartController';
 import { checkout, listMyOrders, updateOrder, deleteOrder, getAdminDashboard, listAllOrdersAdmin } from '../controllers/OrderController';
-import { listLogs } from '../controllers/AuditController'; 
+import { listLogs } from '../controllers/AuditController';
 import { authMiddleware } from '../middlewares/authMiddleware';
 
 const router = Router();
 
 //PÚBLICAS
-router.get('/products', listProducts); 
+router.get('/products', listProducts);
 router.post('/users', createUser);
 router.post('/login', loginUser);
 
@@ -17,6 +17,7 @@ router.post('/login', loginUser);
 router.get('/me', authMiddleware, getMe);
 router.put('/users/profile', authMiddleware, updateUser);
 router.delete('/users/me', authMiddleware, cancelMyAccount);
+router.delete('/test/users', deleteTestUser);
 router.post('/cart', authMiddleware, addToCart);
 router.get('/cart', authMiddleware, listCart);
 router.put('/cart/:id', authMiddleware, updateCartItem);
