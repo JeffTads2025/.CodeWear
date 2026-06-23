@@ -47,12 +47,16 @@ test.describe('Carrinho E2E - Codewear', () => {
     await expect(page).toHaveURL(/\/$/, { timeout: 10000 });
 
     const productCard = page.locator('h3').first();
-    const productName = await productCard.textContent();
+    // Correção: Limpa quebras de linha e espaços múltiplos capturados do HTML
+    const rawProductName = await productCard.textContent();
+    const productName = rawProductName ? rawProductName.replace(/\s+/g, ' ').trim() : '';
+    
     await expect(productCard).toBeVisible({ timeout: 10000 });
     await page.getByRole('button', { name: /Comprar/i }).first().click();
     await page.goto('/cart');
 
-    await expect(page.getByText(productName || '')).toBeVisible({ timeout: 10000 });
+    // Correção: Adicionado { exact: false } para evitar problemas com formatação do texto no carrinho
+    await expect(page.getByText(productName, { exact: false })).toBeVisible({ timeout: 10000 });
     const quantityDisplay = page.locator('.qty-value').first();
     await expect(quantityDisplay).toHaveText('1');
 
@@ -75,7 +79,8 @@ test.describe('Carrinho E2E - Codewear', () => {
     ]);
 
     await expect(page.getByText(/Meus Pedidos/i)).toBeVisible({ timeout: 10000 });
-    await expect(page.getByText(productName || '')).toBeVisible({ timeout: 10000 });
+    // Correção: Adicionado { exact: false } também na listagem dos pedidos finalizados
+    await expect(page.getByText(productName, { exact: false })).toBeVisible({ timeout: 10000 });
 
     await page.goto('/profile');
     page.on('dialog', dialog => dialog.accept());
